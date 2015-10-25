@@ -24,6 +24,7 @@ will provide features such as `onShow` callbacks, etc. Please see
   * [CollectionView's `childViewEventPrefix`](#collectionviews-childvieweventprefix)
   * [CollectionView's `childEvents`](#collectionviews-childevents)
   * [CollectionView's `buildChildView`](#collectionviews-buildchildview)
+  * [CollectionView's `removeChildView`](#collectionviews-removechildview)
   * [CollectionView's `addChild`](#collectionviews-addchild)
   * [CollectionView's `reorderOnSort`](#collectionviews-reorderonsort)
 * [CollectionView's `emptyView`](#collectionviews-emptyview)
@@ -301,6 +302,31 @@ buildChildView: function(child, ChildViewClass, childViewOptions){
   // create the child view instance
   var view = new ChildViewClass(options);
   // return it
+  return view;
+},
+```
+
+### CollectionView's `removeChildView`
+
+Remove a specific view instance and destroy it. This function also updates the indices of
+later views in the collection in order to keep the children in sync with the collection.
+
+```js
+removeChildView: function(view) {
+  
+  // destroy the view
+  view.destory();
+
+  // stop listening the view's event
+  this.stopListening(view);
+
+  // remove the view from the collection list of children
+  this.children.remove(view);
+
+  // update indices of later child views in the collection
+  // decrement the index of views after this one
+  this._updateIndices(view, false);
+
   return view;
 },
 ```
